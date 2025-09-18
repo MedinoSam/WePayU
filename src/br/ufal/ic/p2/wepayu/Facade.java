@@ -2,6 +2,7 @@ package br.ufal.ic.p2.wepayu;
 
 import br.ufal.ic.p2.wepayu.Exception.*;
 import br.ufal.ic.p2.wepayu.models.empregado.Empregado;
+import br.ufal.ic.p2.wepayu.models.empregado.EmpregadoComissionado;
 import br.ufal.ic.p2.wepayu.repository.EmpregadoRepository;
 import br.ufal.ic.p2.wepayu.service.sistemaempregados.SistemaEmpregados;
 import br.ufal.ic.p2.wepayu.service.sistemaponto.SistemaPonto;
@@ -88,25 +89,31 @@ public class Facade {
         sistemaPonto.lancaCartao(empregado, idEmpregado, data, horas);
     }
 
-    public void alteraEmpregado(String idEmpregado, String atributo, String valor) throws AtributoNaoExisteException, EmpregadoNaoExisteException {
+    public void alteraEmpregado(String idEmpregado, String atributo, String valor) throws AtributoNaoExisteException, EmpregadoNaoExisteException, DadosInvalidoException{
         sistemaEmpregados.validarAtributoEmpregado(atributo);
         var empregado = empregadoRepository.retornaEmpregadoPorId(idEmpregado);
-        atualizaEmpregado(sistemaEmpregados.alteraEmpregado(empregado, atributo, valor));
+        sistemaEmpregados.alteraEmpregado(empregado, atributo, valor);
+        atualizaEmpregado(empregado);
+
     }
 
     public void alteraEmpregado(String idEmpregado, String atributo, String valor, String grana) throws EmpregadoNaoExisteException, Exception {
         var empregado = empregadoRepository.retornaEmpregadoPorId(idEmpregado);
-        atualizaEmpregado(sistemaEmpregados.alteraEmpregado(empregado, atributo, valor, grana));
+        var novoEmpregado = sistemaEmpregados.alteraEmpregado(empregado, atributo, valor, grana);
+        empregadoRepository.removeEmpregado(empregado);
+        empregadoRepository.adicionarEmpregado(novoEmpregado);
     }
 
     public void alteraEmpregado(String idEmpregado, String atributo, String valor, String banco, String agencia, String contaCorrente) throws EmpregadoNaoExisteException {
         var empregado = empregadoRepository.retornaEmpregadoPorId(idEmpregado);
-        atualizaEmpregado(sistemaEmpregados.alteraEmpregado(empregado, atributo, valor, banco, agencia, contaCorrente));
+        sistemaEmpregados.alteraEmpregado(empregado, atributo, valor, banco, agencia, contaCorrente);
+        atualizaEmpregado(empregado);
     }
 
     public void alteraEmpregado(String idEmpregado, String atributo, boolean valor, String idSindicato, String taxaSindical) throws EmpregadoNaoExisteException {
         var empregado = empregadoRepository.retornaEmpregadoPorId(idEmpregado);
-        atualizaEmpregado(sistemaEmpregados.alteraEmpregado(empregado, idEmpregado, atributo, valor, idSindicato, taxaSindical, idMembros));
+        sistemaEmpregados.alteraEmpregado(empregado, idEmpregado, atributo, valor, idSindicato, taxaSindical, idMembros);
+        atualizaEmpregado(empregado);
     }
 
     public String getTaxasServico(String idEmpregado, String dataInicial, String dataFinal) throws EmpregadoNaoExisteException, EmpregadoNaoSindicalizadoException, MembroSindicatoNaoExiste {

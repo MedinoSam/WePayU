@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="17.0.16" class="java.beans.XMLDecoder">
- <object class="br.ufal.ic.p2.wepayu.models.empregado.EmpregadoAssalariado">
+ <object class="br.ufal.ic.p2.wepayu.models.empregado.EmpregadoComissionado">
   <void property="endereco">
-   <string>Rua dos Jooes, 334 - Campina Grande</string>
+   <string>Rua dos Jooes, 333 - Campina Grande</string>
   </void>
   <void property="id">
-   <string>4c2ddf2c-a9c5-49e4-a0f7-8f91c2c85913</string>
+   <string>b1776370-6c46-4141-bdf5-058d65d92b89</string>
   </void>
   <void property="membroSindicato">
-   <object class="br.ufal.ic.p2.wepayu.models.sistemasindicato.MembroSindicato" id="MembroSindicato0">
-    <void property="idEmpregado">
-     <string>4c2ddf2c-a9c5-49e4-a0f7-8f91c2c85913</string>
-    </void>
-    <void property="idMembro">
-     <string>s123</string>
-    </void>
+   <object class="br.ufal.ic.p2.wepayu.models.sistemasindicato.MembroSindicato">
     <void property="sindicalizado">
-     <boolean>true</boolean>
+     <boolean>false</boolean>
     </void>
     <void property="taxaSindical">
-     <double>30.0</double>
+     <double>1.0</double>
     </void>
    </object>
   </void>
   <void property="metodoPagamento">
-   <object class="br.ufal.ic.p2.wepayu.models.pagamento.MetodoPagamento" id="MetodoPagamento0">
+   <object class="br.ufal.ic.p2.wepayu.models.pagamento.MetodoPagamento">
     <void property="banco">
      <object class="br.ufal.ic.p2.wepayu.models.pagamento.Banco">
       <void property="agencia">
@@ -41,70 +35,13 @@
     <void property="receberEmMaos">
      <boolean>true</boolean>
     </void>
-    <void id="Boolean0" property="receberViaBanco"/>
    </object>
   </void>
   <void property="nome">
-   <string></string>
+   <string>Joao da Silva</string>
   </void>
   <void property="salarioMensal">
-   <double>500.0</double>
-  </void>
-  <void property="tipo">
-   <string>assalariado</string>
-  </void>
- </object>
- <object class="br.ufal.ic.p2.wepayu.models.empregado.EmpregadoComissionado">
-  <void property="endereco">
-   <string></string>
-  </void>
-  <void property="id">
-   <string>4c2ddf2c-a9c5-49e4-a0f7-8f91c2c85913</string>
-  </void>
-  <void property="membroSindicato">
-   <object class="br.ufal.ic.p2.wepayu.models.sistemasindicato.MembroSindicato">
-    <void property="sindicalizado">
-     <object idref="Boolean0"/>
-    </void>
-    <void property="taxaSindical">
-     <double>1.0</double>
-    </void>
-   </object>
-  </void>
-  <void property="metodoPagamento">
-   <object idref="MetodoPagamento0"/>
-  </void>
-  <void property="nome">
-   <string>Joaozinho da Silva</string>
-  </void>
-  <void property="salarioMensal">
-   <double>1000.0</double>
-  </void>
-  <void property="taxaDeComissao">
-   <double>0.03</double>
-  </void>
-  <void property="tipo">
-   <string>comissionado</string>
-  </void>
- </object>
- <object class="br.ufal.ic.p2.wepayu.models.empregado.EmpregadoComissionado">
-  <void property="endereco">
-   <string>Rua dos Jooes, 334 - Campina Grande</string>
-  </void>
-  <void property="id">
-   <string>4c2ddf2c-a9c5-49e4-a0f7-8f91c2c85913</string>
-  </void>
-  <void property="membroSindicato">
-   <object idref="MembroSindicato0"/>
-  </void>
-  <void property="metodoPagamento">
-   <object idref="MetodoPagamento0"/>
-  </void>
-  <void property="nome">
-   <string></string>
-  </void>
-  <void property="salarioMensal">
-   <double>500.0</double>
+   <double>23.0</double>
   </void>
   <void property="taxaDeComissao">
    <double>0.02</double>

@@ -312,7 +312,7 @@ public class Utils {
         return membroSindicato;
     }
 
-    public static double validarSalario(String salario) {
+    public static double validarSalario(String salario) throws DadosInvalidoException{
         if (salario.isEmpty() || salario.isBlank()) {
             throw  new DadosInvalidoException("Salario nao pode ser nulo.");
         }
@@ -324,27 +324,32 @@ public class Utils {
         return salarioEmDouble;
     }
 
-    public static double validarComissao(String comissao) {
+    public static double validarComissao(String comissao)throws DadosInvalidoException {
         if (comissao.isEmpty() || comissao.isBlank()) {
             throw new DadosInvalidoException("Comissao nao pode ser nula.");
         }
         double comissaoEmDouble = converteAtributoStringParaDouble("Comissao", comissao);
         if (comissaoEmDouble < 0) {
-            throw new DadosInvalidoException("Salario deve ser nao-negativo.");
+            throw new DadosInvalidoException("Comissao deve ser nao-negativa.");
         }
         if (contemLetras(comissao)) throw new DadosInvalidoException("Comissao deve ser numerica.");
 
         return comissaoEmDouble;
     }
 
-    public static void validarInformacoesSindicais(String valor) throws AtributoNaoExisteException {
-        if (valor.isEmpty() || valor.isEmpty()) {
-            throw new AtributoNaoExisteException("Identificacao do sindicato nao pode ser nula.");
-        }
+
+    public static void validarIdentificaoSindical(String valor) throws DadosInvalidoException{
+        if (valor.isEmpty() || valor.isBlank()) throw new DadosInvalidoException("Identificacao do sindicato nao pode ser nula.");
     }
-    public static void validarInformacoesBancarias(String valor) {
+
+    public static void validarTaxaSindical(String valor) throws DadosInvalidoException {
+        if (valor.isEmpty() || valor.isBlank()) throw new DadosInvalidoException("Taxa sindical nao pode ser nula.");
+        if (contemLetras(valor)) throw new DadosInvalidoException("Taxa sindical deve ser numerica.");
+
+    }
+    public static void validarInformacoesBancarias(String atributo, String valor)throws DadosInvalidoException {
         if (valor.isEmpty() || valor.isBlank()) {
-            throw new AtributoNaoExisteException("Banco nao pode ser nulo.");
+            throw new DadosInvalidoException(atributo +  " nao pode ser nulo.");
         }
     }
 

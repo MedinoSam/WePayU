@@ -60,19 +60,19 @@ public class SistemaEmpregados {
         return empregadosFiltradosPorNome.get(indiceReal).getId();
     }
 
-    public Empregado alteraSalario(Empregado empregado, String valor) {
+    public Empregado alteraSalario(Empregado empregado, String valor) throws DadosInvalidoException {
         double salario = Utils.validarSalario(valor);
         empregado.ajustaSalario(salario);
         return empregado;
     }
 
-    public EmpregadoComissionado alteraComissao(Empregado empregado, String valor) {
+    public EmpregadoComissionado alteraComissao(Empregado empregado, String valor) throws DadosInvalidoException {
         double comissao = Utils.validarComissao(valor);
         empregado.alteraComissao(comissao);
         return (EmpregadoComissionado) empregado;
     }
 
-    public Empregado alteraSindicalizado(Empregado empregado, String valor) {
+    public Empregado alteraSindicalizado(Empregado empregado, String valor) throws DadosInvalidoException{
         if (!(valor.equals("true") || valor.equals("false"))) {
             throw new DadosInvalidoException("Valor deve ser true ou false.");
         }
@@ -80,7 +80,7 @@ public class SistemaEmpregados {
         return empregado;
     }
 
-    public Empregado alteraMetodoPagamento  (Empregado empregado, String valor) {
+    public Empregado alteraMetodoPagamento  (Empregado empregado, String valor) throws DadosInvalidoException {
         if (!EmpregadoRepository.METODOS_PAGAMENTO.contains(valor)) {
             throw new DadosInvalidoException("Metodo de pagamento invalido.");
         }
@@ -93,7 +93,7 @@ public class SistemaEmpregados {
         return empregado;
     }
 
-    public Empregado alteraTipo(Empregado empregado, String valor) {
+    public Empregado alteraTipo(Empregado empregado, String valor) throws DadosInvalidoException {
         if (!EmpregadoRepository.TIPOS_EMPREGADOS.contains(valor)) {
             throw new DadosInvalidoException("Tipo invalido.");
         }
@@ -103,10 +103,10 @@ public class SistemaEmpregados {
         return empregado;
     }
 
-    public Empregado alteraEmpregado(Empregado empregado, String idEmpregado, String atributo, Boolean valor, String idSindicato, String taxaSindical, List<String> membros)  throws DadosInvalidoException{
+    public Empregado alteraEmpregado(Empregado empregado, String idEmpregado, String atributo, Boolean valor, String idSindicato, String taxaSindical, List<String> membros)  throws DadosInvalidoException, AtributoNaoExisteException, EmpregadoDuplicadoException{
 
-        Utils.validarInformacoesSindicais(idSindicato);
-        Utils.validarInformacoesSindicais(taxaSindical);
+        Utils.validarIdentificaoSindical(idSindicato);
+        Utils.validarTaxaSindical(taxaSindical);
 
         double taxaSindicalDouble = Utils.converteQualquerAtributoStringParaDouble(taxaSindical);
         if (taxaSindicalDouble < 0) {
@@ -133,9 +133,10 @@ public class SistemaEmpregados {
     }
 
     public Empregado alteraEmpregado(Empregado empregado, String atributo, String valor, String grana) throws Exception {
-        if (atributo.equals("tipo")) {
+        if ("tipo".equals(atributo)) {
             if (TipoDeEmpregado.COMISSIONADO.getValue().equals(valor)) {
-                empregado = converteParaComissionado(empregado, grana);
+
+                empregado =  converteParaComissionado(empregado, grana);
             }
             else if (TipoDeEmpregado.HORISTA.getValue().equals(valor)) {
                 empregado = converteParaHorista(empregado, grana);
@@ -144,7 +145,7 @@ public class SistemaEmpregados {
         return empregado;
     }
 
-    public Empregado alteraEmpregado(Empregado empregado, String atributo, String valor) {
+    public Empregado alteraEmpregado(Empregado empregado, String atributo, String valor) throws DadosInvalidoException, AtributoNaoExisteException{
         switch (atributo) {
             case "nome" -> {
                 empregado.setNome(valor);
@@ -173,15 +174,15 @@ public class SistemaEmpregados {
         }
     }
 
-    public void alteraMetodoPagamento(Empregado empregado, String valor, String banco, String agencia, String contaCorrente) {
+    public void alteraMetodoPagamento(Empregado empregado, String valor, String banco, String agencia, String contaCorrente) throws DadosInvalidoException {
         if (!EmpregadoRepository.METODOS_PAGAMENTO.contains(valor)) {
             throw new AtributoNaoExisteException("Metodo de pagamento inexistente");
         }
 
         if (valor.equals("banco")) {
-            Utils.validarInformacoesBancarias(banco);
-            Utils.validarInformacoesBancarias(agencia);
-            Utils.validarInformacoesBancarias(contaCorrente);
+            Utils.validarInformacoesBancarias("Banco", banco);
+            Utils.validarInformacoesBancarias("Agencia", agencia);
+            Utils.validarInformacoesBancarias("Conta corrente", contaCorrente);
             Banco bancoEntity = new Banco(banco, agencia, contaCorrente);
             MetodoPagamento metodoPagamento = new MetodoPagamento();
             metodoPagamento.setReceberViaBanco(true);

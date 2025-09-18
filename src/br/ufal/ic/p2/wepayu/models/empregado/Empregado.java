@@ -24,11 +24,11 @@ public  class Empregado implements Serializable, EmpregadoInterface {
 
 
     public  Empregado(String nome, String endereco, MetodoPagamento metodoPagamento, String tipo, MembroSindicato membroSindicato) throws AtributoNaoExisteException {
-        this.nome = validaAtributo("Nome", nome);
-        this.endereco = validaAtributo("Endereco", endereco);
+        setNome(nome);
+        setEndereco(endereco);
+        setTipo(validarTipo(tipo));
         this.id = UUID.randomUUID().toString();
         this.metodoPagamento = metodoPagamento;
-        this.tipo = validarTipo(tipo);
         this.membroSindicato = membroSindicato;
     }
 
@@ -65,15 +65,15 @@ public  class Empregado implements Serializable, EmpregadoInterface {
     }
 
     public void setNome(String nome) {
-        this.nome = nome;
+        this.nome = validaAtributo("Nome", nome);
     }
 
     public void setEndereco(String endereco) {
-        this.endereco = endereco;
+        this.endereco = validaAtributo("Endereco", endereco);
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        this.tipo = validarTipo(tipo);
     }
 
     public void setMetodoPagamento(MetodoPagamento metodoPagamento) {
