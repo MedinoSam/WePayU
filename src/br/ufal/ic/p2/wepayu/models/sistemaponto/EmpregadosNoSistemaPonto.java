@@ -1,9 +1,13 @@
 package br.ufal.ic.p2.wepayu.models.sistemaponto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmpregadosNoSistemaPonto {
+public class EmpregadosNoSistemaPonto implements Serializable {
+
+    public EmpregadosNoSistemaPonto() {
+    }
 
     private List<CartaoDePonto> listaDeCartoes = new ArrayList<>();
 

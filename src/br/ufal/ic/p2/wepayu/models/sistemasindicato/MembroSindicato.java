@@ -1,6 +1,8 @@
 package br.ufal.ic.p2.wepayu.models.sistemasindicato;
 
-public class MembroSindicato {
+import java.io.Serializable;
+
+public class MembroSindicato implements Serializable  {
 
     private String idMembro;
     private double taxaSindical;
@@ -12,6 +14,9 @@ public class MembroSindicato {
         this.taxaSindical = taxaSindical;
         this.idEmpregado = idEmpregado;
         this.sindicalizado = sindicalizado;
+    }
+
+    public MembroSindicato() {
     }
 
     public String getIdMembro() {
@@ -45,4 +50,5 @@ public class MembroSindicato {
     public void setSindicalizado(Boolean sindicalizado) {
         this.sindicalizado = sindicalizado;
     }
+
 }

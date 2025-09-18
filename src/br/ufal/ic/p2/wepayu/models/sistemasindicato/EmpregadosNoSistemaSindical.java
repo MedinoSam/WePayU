@@ -1,9 +1,10 @@
 package br.ufal.ic.p2.wepayu.models.sistemasindicato;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmpregadosNoSistemaSindical {
+public class EmpregadosNoSistemaSindical implements Serializable  {
 
     private List<TaxaServicoSindical> listaDeTaxas = new ArrayList<>();
 
@@ -19,4 +20,6 @@ public class EmpregadosNoSistemaSindical {
         listaDeTaxas.add(taxa);
     }
 
+    public EmpregadosNoSistemaSindical() {
+    }
 }

@@ -1,18 +1,24 @@
 package br.ufal.ic.p2.wepayu.models.sistemaponto;
 
-import java.time.LocalDate;
+import br.ufal.ic.p2.wepayu.Exception.DataInvalidaException;
+import br.ufal.ic.p2.wepayu.utils.Utils;
+
+import java.io.Serializable;
 
 
-public class CartaoDePonto {
+public class CartaoDePonto implements Serializable {
 
     private String idEmpregado;
-    private LocalDate data;
+    private String data;
     private String horas;
 
-    public CartaoDePonto(LocalDate data, String horas, String idEmpregado) throws Exception {
+    public CartaoDePonto(String data, String horas, String idEmpregado) {
         this.data = data;
         this.idEmpregado = idEmpregado;
         setHoras(validaHora(horas));
+    }
+
+    public CartaoDePonto() {
     }
 
     public void setHoras(String horas) {
@@ -23,7 +29,7 @@ public class CartaoDePonto {
         return idEmpregado;
     }
 
-    public LocalDate getData() {
+    public String getData() {
         return data;
     }
 
@@ -31,13 +37,21 @@ public class CartaoDePonto {
         return horas;
     }
 
-    public String validaHora (String hora) throws Exception {
+    public void setIdEmpregado(String idEmpregado) {
+        this.idEmpregado = idEmpregado;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String validaHora (String hora) throws DataInvalidaException {
             if (hora.equalsIgnoreCase("0")) {
-                throw  new Exception("O numero de horas nao pode ser nulo");
+                throw  new DataInvalidaException("O numero de horas nao pode ser nulo");
             }
-            int horasEmInt = Integer.parseInt(hora);
-            if (horasEmInt < 0) {
-                throw  new Exception("O numero de horas nao pode ser negativo");
+            double horasEmDouble = Utils.converteQualquerAtributoStringParaDouble(hora);
+            if (horasEmDouble < 0) {
+                throw  new DataInvalidaException("O numero de horas nao pode ser negativo");
             }
             return hora;
     }

@@ -1,6 +1,10 @@
 package br.ufal.ic.p2.wepayu.models.pagamento;
 
-public class MetodoPagamento {
+import br.ufal.ic.p2.wepayu.Exception.MetodoDePagamentoInvalidoException;
+
+import java.io.Serializable;
+
+public class MetodoPagamento implements Serializable  {
 
     private String metodo;
     private Banco banco;
@@ -10,6 +14,15 @@ public class MetodoPagamento {
 
     public MetodoPagamento() {
     }
+
+    /*public String getMetodo() throws MetodoDePagamentoInvalidoException{
+        return switch (this.metodo) {
+            case "banco" -> "banco";
+            case "emMaos" -> "emMaos";
+            case "correios" -> "correios";
+            default -> throw new MetodoDePagamentoInvalidoException("Metodo de pagamento invalido");
+        };
+    }*/
 
     public String getMetodo() {
         return metodo;

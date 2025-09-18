@@ -1,17 +1,21 @@
 package br.ufal.ic.p2.wepayu.models.sistemasindicato;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TaxaServicoSindical {
+public class TaxaServicoSindical implements Serializable  {
 
     private String idMembro;
-    private LocalDate data;
+    private String data;
     private double valor;
 
-    public TaxaServicoSindical(String idMembro, LocalDate data, double valor) {
+    public TaxaServicoSindical(String idMembro, String data, double valor) {
         this.idMembro = idMembro;
         this.data = data;
         this.valor = valor;
+    }
+
+    public TaxaServicoSindical() {
     }
 
     public String getIdMembro() {
@@ -22,11 +26,11 @@ public class TaxaServicoSindical {
         this.idMembro = idMembro;
     }
 
-    public LocalDate getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(String data) {
         this.data = data;
     }
 

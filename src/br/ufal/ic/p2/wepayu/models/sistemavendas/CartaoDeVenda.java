@@ -1,16 +1,20 @@
 package br.ufal.ic.p2.wepayu.models.sistemavendas;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CartaoDeVenda {
+public class CartaoDeVenda implements Serializable {
     private String idEmpregado;
-    private LocalDate data;
+    private String data;
     private double valor;
 
-    public CartaoDeVenda(String idEmpregado, LocalDate data, double valor) {
+    public CartaoDeVenda(String idEmpregado, String data, double valor) {
         this.idEmpregado = idEmpregado;
         this.data = data;
         this.valor = valor;
+    }
+
+    public CartaoDeVenda() {
     }
 
     public String getIdEmpregado() {
@@ -21,11 +25,11 @@ public class CartaoDeVenda {
         this.idEmpregado = idEmpregado;
     }
 
-    public LocalDate getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(String data) {
         this.data = data;
     }
 
