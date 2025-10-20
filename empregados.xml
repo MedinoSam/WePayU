@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="17.0.16" class="java.beans.XMLDecoder">
+ <object class="java.util.HashMap">
+  <void method="put">
+   <string>5</string>
+   <object class="br.ufal.ic.p2.wepayu.models.empregado.EmpregadoHorista">
+    <void property="agendaPagamento">
+     <object class="br.ufal.ic.p2.wepayu.models.pagamento.AgendaPagamento">
+      <void property="agenda">
+       <string>semanal 2</string>
+      </void>
+     </object>
+    </void>
+    <void property="endereco">
+     <string>Rua dos Jooes, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>5</string>
+    </void>
+    <void property="nome">
+     <string>Joao da Silva</string>
+    </void>
+    <void property="salarioPorHora">
+     <double>23.0</double>
+    </void>
+   </object>
+  </void>
+ </object>
+ <int>0</int>
+</java>
