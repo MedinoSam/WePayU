@@ -1,81 +1,70 @@
 package br.ufal.ic.p2.wepayu.models.empregado;
 
-import br.ufal.ic.p2.wepayu.interfaces.EmpregadoInterface;
-import br.ufal.ic.p2.wepayu.models.pagamento.MetodoPagamento;
-import br.ufal.ic.p2.wepayu.models.sistemasindicato.MembroSindicato;
-import br.ufal.ic.p2.wepayu.utils.Utils;
+import br.ufal.ic.p2.wepayu.models.pagamento.AgendaPagamento;
+import br.ufal.ic.p2.wepayu.models.ResultadoDeVenda;
 
-import java.io.Serializable;
-
-public class EmpregadoComissionado extends Empregado implements EmpregadoInterface {
+import java.util.ArrayList;
 
 
-    // taxa de comissao tem que vir de algum lugar
-    //Uma venda tem uma data, um valor, e uma taxa de comissao
+public class EmpregadoComissionado extends Empregado {
     private double salarioMensal;
-    private double taxaDeComissao = 0;
+    private double taxaDeComissao;
+    private ArrayList<ResultadoDeVenda> resultadoDeVenda= new ArrayList<>();
 
-    public EmpregadoComissionado(String nome, String endereco, MetodoPagamento metodoPagamento, double salarioMensal, double taxaDeComissao, String tipo, MembroSindicato membroSindicato) throws IllegalArgumentException {
-        super(nome, endereco, metodoPagamento, tipo, membroSindicato);
-        setSalarioMensal(validaSalario(salarioMensal));
-        setTaxaDeComissao(validarComissao(taxaDeComissao));
+    public EmpregadoComissionado() { }
 
-    }
-
-    public EmpregadoComissionado() {
-
-    }
-
-    public void setTaxaDeComissao(double taxaDeComissao) throws IllegalArgumentException{
+    public EmpregadoComissionado(String nome, String endereco, double salario, double taxaDeComissao) {
+        super(nome, endereco);
+        this.salarioMensal = salario;
         this.taxaDeComissao = taxaDeComissao;
-    }
-
-    public void setSalarioMensal(double salarioMensal) throws IllegalArgumentException{
-        this.salarioMensal = salarioMensal;
+        this.setAgendaPagamento(AgendaPagamento.getAgendaPadrao("comissionado"));
     }
 
     public double getSalarioMensal() {
         return salarioMensal;
     }
 
+    public void setSalarioMensal(double salarioMensal) {
+        this.salarioMensal = salarioMensal;
+    }
+
+    @Override
     public double getTaxaDeComissao() {
         return taxaDeComissao;
     }
 
-
-    public double validaSalario(double salario) throws IllegalArgumentException{
-        if (salario == 0) {
-            throw new IllegalArgumentException("Salario nao pode ser nulo.");
-        }
-        if (salario < 0) {
-            throw  new IllegalArgumentException("Salario deve ser nao-negativo.");
-        }
-        return  salario;
-    }
-
-    public double validarComissao(double comissao) throws IllegalArgumentException {
-        if (comissao == 0) {
-            throw new IllegalArgumentException("Comissao nao pode ser nula.");
-        }
-        if (comissao < 0) {
-            throw  new IllegalArgumentException("Comissao deve ser nao-negativa.");
-        }
-        return  comissao;
+    @Override
+    public void setTaxaDeComissao(double taxaDeComissao) {
+        this.taxaDeComissao = taxaDeComissao;
     }
 
     @Override
-    public EmpregadoComissionado alteraComissao(double comissao) {
-        this.taxaDeComissao = comissao;
-        return this;
+    public ArrayList<ResultadoDeVenda> getResultadoDeVenda() {
+        return resultadoDeVenda;
+    }
+
+    public void setResultadoDeVenda(ArrayList<ResultadoDeVenda> resultadoDeVenda) {
+        this.resultadoDeVenda = resultadoDeVenda;
     }
 
     @Override
-    public EmpregadoComissionado converteEmpregado(Empregado empregado, double comissao) throws Exception {
-        return Utils.converterHoristaParaComissionado((EmpregadoHorista) empregado, comissao);
+    public String getTipo() {
+        return "comissionado";
     }
 
     @Override
-    public void ajustaSalario(double salario) {
-        this.salarioMensal = salario;
+    public String getSalario() {
+        return forcarValorMonetario(this.salarioMensal);
+    }
+
+    private String forcarValorMonetario(double valor) {
+        java.math.BigDecimal bd = java.math.BigDecimal.valueOf(valor);
+        bd = bd.setScale(2, java.math.RoundingMode.DOWN);
+        return bd.toString().replace('.', ',');
+    }
+
+    @Override
+    public void lancarResultadoDeVenda(ResultadoDeVenda resultadoDeVenda) {
+        this.resultadoDeVenda.add(resultadoDeVenda);
     }
 }

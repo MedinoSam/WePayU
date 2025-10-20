@@ -1,57 +1,38 @@
 package br.ufal.ic.p2.wepayu.models.empregado;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoComissionadoException;
-import br.ufal.ic.p2.wepayu.interfaces.EmpregadoInterface;
-import br.ufal.ic.p2.wepayu.models.pagamento.MetodoPagamento;
-import br.ufal.ic.p2.wepayu.models.sistemasindicato.MembroSindicato;
-import br.ufal.ic.p2.wepayu.utils.Utils;
 
-import java.io.Serializable;
+import br.ufal.ic.p2.wepayu.models.pagamento.AgendaPagamento;
 
-public class EmpregadoAssalariado extends  Empregado implements  EmpregadoInterface  {
-
+public class EmpregadoAssalariado extends Empregado {
     private double salarioMensal;
 
-    public EmpregadoAssalariado(String nome, String endereco, MetodoPagamento metodoPagamento, double salarioMensal, String tipo, MembroSindicato membroSindicato) throws IllegalArgumentException {
-        super(nome, endereco, metodoPagamento, tipo, membroSindicato);
-        setSalarioMensal(validaSalario(salarioMensal));
+    public EmpregadoAssalariado() { }
+
+    public EmpregadoAssalariado(String nome, String endereco, double salario){
+        super(nome, endereco);
+        setSalarioMensal(salario);
+        this.setAgendaPagamento(AgendaPagamento.getAgendaPadrao("assalariado"));
     }
-
-    public EmpregadoAssalariado() {
-    }
-
-
 
     public double getSalarioMensal() {
         return salarioMensal;
     }
 
-    public void setSalarioMensal(double salarioMensal) throws IllegalArgumentException {
-        this.salarioMensal = salarioMensal;
-    }
+    public void setSalarioMensal(double salarioMensal) { this.salarioMensal = salarioMensal; }
 
-    public double validaSalario(double salario) throws IllegalArgumentException {
-        if (salario == 0) {
-            throw new IllegalArgumentException("Salario nao pode ser nulo.");
-        }
-        if (salario < 0) {
-            throw  new IllegalArgumentException("Salario deve ser nao-negativo.");
-        }
-        return  salario;
-    }
     @Override
-    public EmpregadoComissionado alteraComissao(double comissao) throws EmpregadoNaoComissionadoException{
-        throw new EmpregadoNaoComissionadoException("Empregado nao eh comissionado");
-
+    public String getTipo() {
+        return "assalariado";
     }
 
     @Override
-    public EmpregadoComissionado converteEmpregado(Empregado empregado, double comissao) throws Exception {
-        return Utils.converteAssalariadoParaComissionado((EmpregadoAssalariado) empregado, comissao);
+    public String getSalario() {
+        return forcarValorMonetario(this.salarioMensal);
     }
 
-    @Override
-    public void ajustaSalario(double salario) {
-        this.salarioMensal = salario;
+    private String forcarValorMonetario(double valor) {
+        java.math.BigDecimal bd = java.math.BigDecimal.valueOf(valor);
+        bd = bd.setScale(2, java.math.RoundingMode.DOWN);
+        return bd.toString().replace('.', ',');
     }
 }

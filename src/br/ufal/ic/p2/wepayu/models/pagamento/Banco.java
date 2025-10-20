@@ -1,20 +1,16 @@
 package br.ufal.ic.p2.wepayu.models.pagamento;
 
-import java.io.Serializable;
-
-public class Banco implements Serializable  {
-
+public class Banco extends MetodoPagamento {
     private String banco;
     private String agencia;
     private String contaCorrente;
+
+    public Banco() { }
 
     public Banco(String banco, String agencia, String contaCorrente) {
         this.banco = banco;
         this.agencia = agencia;
         this.contaCorrente = contaCorrente;
-    }
-
-    public Banco() {
     }
 
     public String getBanco() {
@@ -33,6 +29,7 @@ public class Banco implements Serializable  {
         this.agencia = agencia;
     }
 
+
     public String getContaCorrente() {
         return contaCorrente;
     }
@@ -40,4 +37,15 @@ public class Banco implements Serializable  {
     public void setContaCorrente(String contaCorrente) {
         this.contaCorrente = contaCorrente;
     }
+
+    @Override
+    public void Pagamento() {
+        System.out.println("No banco");
+    }
+
+    @Override
+    public String getMetodoPagamento() {
+        return "banco";
+    }
+
 }

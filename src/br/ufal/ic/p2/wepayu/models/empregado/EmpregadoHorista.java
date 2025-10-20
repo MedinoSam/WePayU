@@ -1,61 +1,56 @@
 package br.ufal.ic.p2.wepayu.models.empregado;
 
+import br.ufal.ic.p2.wepayu.models.pagamento.AgendaPagamento;
+import br.ufal.ic.p2.wepayu.models.CartaoDePonto;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoComissionadoException;
-import br.ufal.ic.p2.wepayu.interfaces.EmpregadoInterface;
-import br.ufal.ic.p2.wepayu.models.pagamento.MetodoPagamento;
-import br.ufal.ic.p2.wepayu.models.sistemasindicato.MembroSindicato;
-import br.ufal.ic.p2.wepayu.utils.Utils;
+import java.util.ArrayList;
 
-import java.io.Serializable;
 
-public class EmpregadoHorista extends Empregado implements EmpregadoInterface {
+public class EmpregadoHorista extends Empregado {
+    private double salarioPorHora;
+    private ArrayList<CartaoDePonto> cartoes = new  ArrayList<>();
 
-    private double salarioPorHora = 0.0;
+    public EmpregadoHorista() { }
 
-//    As horas trabalhadas serao retiradas da folha de ponto, devo validar elas la
-
-    public EmpregadoHorista(String nome, String endereco, MetodoPagamento metodoPagamento, double salarioPorHora, String tipo, MembroSindicato membroSindicato) throws  IllegalArgumentException {
-        super(nome, endereco, metodoPagamento, tipo, membroSindicato);
-        setSalarioPorHora(validaTaxaSalarial(salarioPorHora));
-    }
-
-    public EmpregadoHorista() {
-
+    public EmpregadoHorista(String nome, String endereco, double salario) {
+        super(nome, endereco);
+        this.salarioPorHora = salario;
+        this.setAgendaPagamento(AgendaPagamento.getAgendaPadrao("horista"));
     }
 
     public double getSalarioPorHora() {
         return salarioPorHora;
     }
 
-
-    public void setSalarioPorHora(double salarioPorHora) throws IllegalArgumentException {
+    public void setSalarioPorHora(double salarioPorHora) {
         this.salarioPorHora = salarioPorHora;
     }
 
+    @Override
+    public ArrayList<CartaoDePonto> getCartoes() { return this.cartoes; }
 
-    public double validaTaxaSalarial(double taxaSalarial) throws IllegalArgumentException {
-        if (taxaSalarial == 0) {
-            throw new IllegalArgumentException("Taxa salarial nao pode ser nula");
-        }
-        if (taxaSalarial < 0) {
-            throw  new IllegalArgumentException("Taxa salarial nao pode ser negativa");
-        }
-        return  taxaSalarial;
+    public void setCartoes(ArrayList<CartaoDePonto> cartoes) {
+        this.cartoes = cartoes;
     }
 
     @Override
-    public EmpregadoComissionado alteraComissao(double comissao) throws EmpregadoNaoComissionadoException{
-        throw new EmpregadoNaoComissionadoException("Empregado nao eh comissionado");
+    public void lancarCartao(CartaoDePonto cartao) {
+        this.cartoes.add(cartao);
     }
 
     @Override
-    public EmpregadoComissionado converteEmpregado(Empregado empregado, double comissao) throws Exception {
-        return Utils.converterHoristaParaComissionado((EmpregadoHorista) empregado, comissao);
+    public String getTipo() {
+        return "horista";
     }
 
     @Override
-    public void ajustaSalario(double salario) {
-        this.salarioPorHora = salario;
-   }
+    public String getSalario() {
+        return truncarValorMonetario(this.salarioPorHora);
+    }
+
+    private String truncarValorMonetario(double valor) {
+        java.math.BigDecimal bd = java.math.BigDecimal.valueOf(valor);
+        bd = bd.setScale(2, java.math.RoundingMode.DOWN);
+        return bd.toString().replace('.', ',');
+    }
 }
